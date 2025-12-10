@@ -525,7 +525,7 @@
             }, 300);
         };
 
-        // --- 記事一覧描画 ---
+      // --- 記事一覧描画 (修正版) ---
         function renderArticles() {
             const container = document.getElementById('articles-grid');
             const filtered = currentCategory === 'ALL' 
@@ -538,9 +538,13 @@
             }
 
             container.innerHTML = filtered.map((article, index) => `
-                <div class="group cursor-pointer flex flex-col h-full animate-[fadeIn_0.5s_ease-out_forwards]" style="animation-delay: ${index * 0.1}s; opacity: 0;">
+                <div class="group cursor-pointer flex flex-col h-full animate-[fadeIn_0.5s_ease-out_forwards]" style="animation-delay: ${index * 0.1}s; opacity: 0;" onclick="openModal(${article.id})">
                     <!-- サムネイル -->
                     <div class="h-64 rounded-2xl ${article.imageColor} relative overflow-hidden shadow-md group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
+                        
+                        <!-- ★★★ ここが追加・修正ポイント！ ★★★ -->
+                        ${article.image ? `<img src="${article.image}" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="${article.title}">` : ''}
+                        
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition duration-500"></div>
                         
                         ${article.type === 'VIDEO' ? `
@@ -580,7 +584,6 @@
                 </div>
             `).join('');
         }
-
         // --- モーダル制御 ---
         const modal = document.getElementById('article-modal');
         const modalContent = document.getElementById('modal-content');
